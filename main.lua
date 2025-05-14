@@ -1,9 +1,11 @@
 --- STEAMODDED HEADER
---- MOD_NAME: Pawn Breaker
---- MOD_ID: PAWN_BREAKER
+--- MOD_NAME: Lots O Stuff
+--- MOD_ID: LOTS_O_STUFF
 --- MOD_AUTHOR: [fisherlul]
---- MOD_DESCRIPTION: An example mod on how to create Jokers.
+--- MOD_DESCRIPTION: A Balatro mod that adds vanilla-esque Jokers, and some crazy ones.
+--- DEPENDENCIES: [Steamodded>=1.0.0~BETA, Mod1, Mod2>=1.0.0, Mod3<=1.7.5, Mod4>=1.0.0<=2.0]
 --- PREFIX: xmpl
+--- VERSION: 1.0.0
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -30,7 +32,10 @@ SMODS.Joker {
         mult = 5,
     }},
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.money } }
+        return { vars = { 
+            card.ability.extra.mult, 
+            card.ability.extra.money, 
+        }}
     end,
     rarity = 3,
     atlas = "Jokers",
@@ -44,15 +49,17 @@ SMODS.Joker {
 
     calculate = function(self, card, context) 
         if context.joker_main then
+            card.ability.extra.mult = card.ability.extra.mult,
             return {
                 mult_mod = card.ability.extra.mult,
-                money_mod = card.ability.extra.money,
-                localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } },
-                localize { type = 'variable', key = 'a_money', vars = { card.ability.extra.money } },
+                message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } },
             }
         end
     end
-    
+    calc_dollar_bonus = function(self, card)
+		local bonus = card.ability.extra.money
+		if bonus > 0 then return bonus end
+	end
 }
 
 
