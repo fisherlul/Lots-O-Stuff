@@ -3,7 +3,6 @@
 --- MOD_ID: LOTS_O_STUFF
 --- MOD_AUTHOR: [fisherlul]
 --- MOD_DESCRIPTION: A Balatro mod that adds vanilla-esque Jokers, and some crazy ones.
---- DEPENDENCIES: [Steamodded>=1.0.0~BETA, Mod1, Mod2>=1.0.0, Mod3<=1.7.5, Mod4>=1.0.0<=2.0]
 --- PREFIX: xmpl
 --- VERSION: 1.0.0
 
