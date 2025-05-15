@@ -22,7 +22,7 @@ SMODS.Joker {
         name = "Pawn Breaker",
         text = {
             "When a Joker is sold, gain {C:mult}+#1# {}Mult.",
-            "Earn {C:money}#2#${} at end of round."
+            "Earn {C:money}#2#${} at end of round.",
             "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
         }
     },
