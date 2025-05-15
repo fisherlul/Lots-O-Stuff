@@ -28,14 +28,9 @@ SMODS.Joker {
     },
     config = {extra = {
         money = 2, 
-        mult = 5,
+        mult = 0,
+        mult_gain = 5, -- Added missing mult_gain field
     }},
-    loc_vars = function(self, info_queue, card)
-        return { vars = { 
-            card.ability.extra.mult, 
-            card.ability.extra.money, 
-        }}
-    end,
     rarity = 3,
     atlas = "Jokers",
     cost = 8,
@@ -45,20 +40,38 @@ SMODS.Joker {
     eternal_compat = true, --can it be eternal
     perishable_compat = false, --can it be perishable
     pos = { x = 0, y = 0 },
-
+    loc_vars = function(self, info_queue, card) 
+        return { vars = { 
+            card.ability.extra.mult_gain, 
+            card.ability.extra.money,
+            card.ability.extra.mult, 
+        }}
+    end,
     calculate = function(self, card, context) 
         if context.joker_main then
-            card.ability.extra.mult = card.ability.extra.mult,
+            local value = 0
+            for _, v in ipairs(G.GAME.jokers_sold) do
+                value = value + 1
+            end
+            local total_mult = card.ability.extra.mult + (card.ability.extra.mult_gain * value)
+            card.ability.extra.mult = total_mult
             return {
-                mult_mod = card.ability.extra.mult,
-                message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } },
+                card = card,
+                message = 'Upgraded!',
+                colour = G.C.MULT,
+                mult_mod = total_mult,
+                message = localize { type = 'variable', key = 'a_mult', vars = { total_mult } },
             }
         end
-    end
+    end,
     calc_dollar_bonus = function(self, card)
-		local bonus = card.ability.extra.money
-		if bonus > 0 then return bonus end
-	end
+        local bonus = card.ability.extra.money
+        local value = 0
+        for _, v in ipairs(G.GAME.jokers_sold) do
+            value = value + 1
+        end
+        if bonus > 0 then return to_big(bonus) * value end
+    end
 }
 
 
