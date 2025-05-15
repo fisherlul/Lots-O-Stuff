@@ -21,8 +21,8 @@ SMODS.Joker {
     loc_txt = {
         name = "Pawn Breaker",
         text = {
-            "When a Joker is sold,",
-            "gain {C:mult}+#1# {}Mult and {C:money}#2#${}",
+            "When a Joker is sold, gain {C:mult}+#1# {}Mult.",
+            "Earn {C:money}#2#${} at end of round."
             "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
         }
     },
@@ -50,7 +50,7 @@ SMODS.Joker {
     calculate = function(self, card, context) 
         if context.joker_main then
             local value = 0
-            for _, v in ipairs(G.GAME.jokers_sold) do
+            if context.selling_card and G.GAME.jokers_sold and #G.GAME.jokers_sold > 0 do
                 value = value + 1
             end
             local total_mult = card.ability.extra.mult + (card.ability.extra.mult_gain * value)
@@ -65,13 +65,9 @@ SMODS.Joker {
         end
     end,
     calc_dollar_bonus = function(self, card)
-        local bonus = card.ability.extra.money
-        local value = 0
-        for _, v in ipairs(G.GAME.jokers_sold) do
-            value = value + 1
-        end
-        if bonus > 0 then return to_big(bonus) * value end
-    end
+		local bonus = card.ability.extra.money
+		if bonus > 0 then return bonus end
+	end
 }
 
 
