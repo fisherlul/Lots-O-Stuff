@@ -1,9 +1,10 @@
 --- STEAMODDED HEADER
---- MOD_NAME: Pawn Breaker
---- MOD_ID: PAWN_BREAKER
+--- MOD_NAME: Lots O Stuff
+--- MOD_ID: LOTS_O_STUFF
 --- MOD_AUTHOR: [fisherlul]
---- MOD_DESCRIPTION: An example mod on how to create Jokers.
+--- MOD_DESCRIPTION: A Balatro mod that adds vanilla-esque Jokers, and some crazy ones.
 --- PREFIX: xmpl
+--- VERSION: 1.0.0
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -20,18 +21,16 @@ SMODS.Joker {
     loc_txt = {
         name = "Pawn Breaker",
         text = {
-            "When a Joker is sold,",
-            "gain {C:mult}+#1# {}Mult and {C:money}#2#${}",
+            "When a Joker is sold, gain {C:mult}+#1# {}Mult.",
+            "Earn {C:money}#2#${} at end of round."
             "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
         }
     },
     config = {extra = {
         money = 2, 
-        mult = 5,
+        mult = 0,
+        mult_gain = 5, -- Added missing mult_gain field
     }},
-    loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.money } }
-    end,
     rarity = 3,
     atlas = "Jokers",
     cost = 8,
@@ -41,18 +40,34 @@ SMODS.Joker {
     eternal_compat = true, --can it be eternal
     perishable_compat = false, --can it be perishable
     pos = { x = 0, y = 0 },
-
+    loc_vars = function(self, info_queue, card) 
+        return { vars = { 
+            card.ability.extra.mult_gain, 
+            card.ability.extra.money,
+            card.ability.extra.mult, 
+        }}
+    end,
     calculate = function(self, card, context) 
         if context.joker_main then
+            local value = 0
+            if context.selling_card and G.GAME.jokers_sold and #G.GAME.jokers_sold > 0 do
+                value = value + 1
+            end
+            local total_mult = card.ability.extra.mult + (card.ability.extra.mult_gain * value)
+            card.ability.extra.mult = total_mult
             return {
-                mult_mod = card.ability.extra.mult,
-                money_mod = card.ability.extra.money,
-                localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } },
-                localize { type = 'variable', key = 'a_money', vars = { card.ability.extra.money } },
+                card = card,
+                message = 'Upgraded!',
+                colour = G.C.MULT,
+                mult_mod = total_mult,
+                message = localize { type = 'variable', key = 'a_mult', vars = { total_mult } },
             }
         end
-    end
-    
+    end,
+    calc_dollar_bonus = function(self, card)
+		local bonus = card.ability.extra.money
+		if bonus > 0 then return bonus end
+	end
 }
 
 
