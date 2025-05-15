@@ -50,7 +50,7 @@ SMODS.Joker {
     calculate = function(self, card, context) 
         if context.joker_main then
             local value = 0
-            if context.selling_card and G.GAME.jokers_sold and #G.GAME.jokers_sold > 0 do
+            if context.selling_card and G.GAME.jokers_sold and #G.GAME.jokers_sold > 0 then do
                 value = value + 1
             end
             local total_mult = card.ability.extra.mult + (card.ability.extra.mult_gain * value)
