@@ -52,6 +52,11 @@ SMODS.Joker {
         if context.selling_card and not context.blueprint and not context.retrigger_joker then
             total_mult = card.ability.extra.mult + card.ability.extra.mult_gain
             card.ability.extra.mult = total_mult
+            return {
+				message = 'Upgraded!',
+				colour = G.C.MULT,
+				card = card
+			}
         end
         if context.joker_main then
             return {
