@@ -17,9 +17,9 @@ SMODS.Atlas {
 }
 
 SMODS.Joker {
-    key = "pawnbreaker",
+    key = "pawnbroker",
     loc_txt = {
-        name = "Pawn Breaker",
+        name = "Pawn Broker",
         text = {
             "When a Joker is sold, gain {C:mult}+#1# {}Mult.",
             "Earn {C:money}#2#${} at end of round.",
