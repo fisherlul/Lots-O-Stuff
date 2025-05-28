@@ -105,7 +105,7 @@ SMODS.Joker {
     end,
 
     calculate = function(self, card, context) 
-        if context.joker_main then
+        if context.joker_main and not context.blueprint then
             return {
                 card = card,
                 colour = G.C.SUIT,
@@ -114,39 +114,29 @@ SMODS.Joker {
             }
         end
     end,
-    -- on_round_start = function(self, card)
-    --     local suits = { "hearts", "clubs", "spades", "diamonds" }
-    --     local suit = suits[math.random(1, #suits)]
-    --     card.ability.extra.suit = suit
-    --     return {
-    --         message = 'Suit changed!',
-    --         colour = G.C.SUIT,
-    --         card = card
-    --     }
-    -- end,
 }
 local igo = Game.init_game_object
 function Game:init_game_object()
-	local ret = igo(self)
-	ret.current_round.colorchanger_card = { suit = 'Spades' }
-	return ret
+    local ret = igo(self)
+
+    -- Initialize colorchanger_card for this round
+    ret.current_round.colorchanger_card = { suit = 'Spades' }
+
+    return ret
 end
 
 function SMODS.current_mod.reset_game_globals(run_start)
-	-- Initialize the variable each round
-	G.GAME.current_round.colorchanger_card = { suit = 'Spades' }
-	
-	-- Generate a random suit
-	local random_suit = pseudorandom_element(SMODS.Suits, pseudoseed('colorchanger' .. G.GAME.round_resets.ante))
-	G.GAME.current_round.colorchanger_card.suit = random_suit
+    G.GAME.current_round.colorchanger_card = { suit = 'Spades' }
 
-	-- Apply the random suit to every card in hand
-	for _, card in ipairs(G.hand.cards) do
-		if card.suit then
-			card.suit = random_suit
-			card:set_sprites()  -- Update visuals (optional, but typically needed!)
-		end
-	end
+    local random_suit = pseudorandom_element(SMODS.Suits, pseudoseed('colorchanger' .. G.GAME.round_resets.ante))
+    G.GAME.current_round.colorchanger_card.suit = random_suit
+
+    for _, card in ipairs(G.hand.cards) do
+        if card.suit then
+            card.suit = random_suit
+            card:set_sprites()  -- Update visuals
+        end
+    end
 end
 
 ----------------------------------------------
