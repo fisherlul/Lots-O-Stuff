@@ -94,8 +94,8 @@ SMODS.Joker {
     cost = 4,
     loc_vars = function(self, info_queue, card) 
         return { vars = { 
-            localize(G.GAME.current_round.colorchanger_card.suit, 'suits_singular'),
-            colour = { G.C.SUITS[G.GAME.current_round.colorchanger_card.suit] }
+            localize(G.GAME.current_round.suitchanger_card.suit, 'suits_singular'),
+            colour = { G.C.SUITS[G.GAME.current_round.suitchanger_card.suit] }
          } }
     end,
     calculate = function(self, card, context) 
