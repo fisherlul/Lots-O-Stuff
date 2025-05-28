@@ -92,6 +92,9 @@ SMODS.Joker {
     rarity = 2, 
     atlas = "Jokers",
     cost = 4,
+    config = {extra = {
+        suit = 'Spades',  -- Default suit
+    }},
     loc_vars = function(self, info_queue, card) 
         local suit = (G.GAME.current_round.colorchanger_card and G.GAME.current_round.colorchanger_card.suit) or "Spades"
         return { 
