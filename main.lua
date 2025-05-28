@@ -93,15 +93,17 @@ SMODS.Joker {
     atlas = "Jokers",
     cost = 4,
     loc_vars = function(self, info_queue, card) 
+        local suit = (G.GAME.current_round.colorchanger_card and G.GAME.current_round.colorchanger_card.suit) or "Spades"
         return { 
             vars = { 
-                localize(G.GAME.current_round.colorchanger_card.suit, 'suits_singular')
+                localize(suit, 'suits_singular')
             },
             colours = { 
-                G.C.SUITS[G.GAME.current_round.colorchanger_card and G.GAME.current_round.colorchanger_card.suit or "Spades"] 
+                G.C.SUITS[suit] 
             }
         }
     end,
+
     calculate = function(self, card, context) 
         if context.joker_main then
             return {
