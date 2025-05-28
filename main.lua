@@ -107,16 +107,16 @@ SMODS.Joker {
         }
     end,
 
-    calculate = function(self, card, context) 
-        if context.joker_main and not context.blueprint then
-            return {
-                card = card,
-                colour = G.C.SUIT,
-                suit_mod = card.ability.extra.suit,
-                message = localize { type = 'variable', key = 'a_suit', vars = { card.ability.extra.suit } },
-            }
-        end
-    end,
+    -- calculate = function(self, card, context) 
+    --     if context.joker_main and not context.blueprint then
+    --         return {
+    --             card = card,
+    --             colour = G.C.SUIT,
+    --             suit_mod = card.ability.extra.suit,
+    --             message = localize { type = 'variable', key = 'a_suit', vars = { card.ability.extra.suit } },
+    --         }
+    --     end
+    -- end,
 }
 local igo = Game.init_game_object
 function Game:init_game_object()
