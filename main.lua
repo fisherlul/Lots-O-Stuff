@@ -96,11 +96,11 @@ SMODS.Joker {
         local suit = (G.GAME.current_round.colorchanger_card and G.GAME.current_round.colorchanger_card.suit) or "Spades"
         return { 
             vars = { 
-                localize(suit, 'suits_singular')
+                localize(suit, 'suits_singular'),
+                colours = { 
+                    G.C.SUITS[suit] 
+                },
             },
-            colours = { 
-                G.C.SUITS[suit] 
-            }
         }
     end,
 
