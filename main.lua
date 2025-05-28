@@ -4,7 +4,7 @@
 --- MOD_AUTHOR: [fisherlul]
 --- MOD_DESCRIPTION: A Balatro mod that adds vanilla-esque Jokers, and some crazy ones.
 --- PREFIX: xmpl
---- VERSION: 1.0.0
+--- VERSION: 0.9.1
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -73,7 +73,75 @@ SMODS.Joker {
 	end
 }
 
+SMODS.Joker {
+    key = "colorchanger",
+    loc_txt = {
+        name = "Color Changer",
+        text = {
+            "In the final hand, treat the suit of",
+            "all cards held on hand as {V:1}#1#{},",
+            "suit changes every round."
+        }
+    },
+    pos = { x = 1, y = 0 },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = false,
+    rarity = 2, 
+    atlas = "Jokers",
+    cost = 4,
+    loc_vars = function(self, info_queue, card) 
+        return { vars = { 
+            localize(G.GAME.current_round.colorchanger_card.suit, 'suits_singular'),
+            colour = { G.C.SUITS[G.GAME.current_round.colorchanger_card.suit] }
+         } }
+    end,
+    calculate = function(self, card, context) 
+        if context.joker_main then
+            return {
+                card = card,
+                colour = G.C.SUIT,
+                suit_mod = card.ability.extra.suit,
+                message = localize { type = 'variable', key = 'a_suit', vars = { card.ability.extra.suit } },
+            }
+        end
+    end,
+    -- on_round_start = function(self, card)
+    --     local suits = { "hearts", "clubs", "spades", "diamonds" }
+    --     local suit = suits[math.random(1, #suits)]
+    --     card.ability.extra.suit = suit
+    --     return {
+    --         message = 'Suit changed!',
+    --         colour = G.C.SUIT,
+    --         card = card
+    --     }
+    -- end,
+}
+local igo = Game.init_game_object
+function Game:init_game_object()
+	local ret = igo(self)
+	ret.current_round.suitchanger_card = { suit = 'spades' }
+	return ret
+end
 
+function SMODS.current_mod.reset_game_globals(run_start)
+	-- Initialize the variable each round
+	G.GAME.current_round.suitchanger_card = { suit = 'spades' }
+	
+	-- Generate a random suit
+	local random_suit = pseudorandom_element(SMODS.Suits, pseudoseed('suitshuffler' .. G.GAME.round_resets.ante))
+	G.GAME.current_round.suitchanger_card.suit = random_suit
+
+	-- Apply the random suit to every card in hand
+	for _, card in ipairs(G.hand.cards) do
+		if card.suit then
+			card.suit = random_suit
+			card:set_sprites()  -- Update visuals (optional, but typically needed!)
+		end
+	end
+end
 
 ----------------------------------------------
 ------------MOD CODE END----------------------
