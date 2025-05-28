@@ -93,9 +93,11 @@ SMODS.Joker {
     atlas = "Jokers",
     cost = 4,
     loc_vars = function(self, info_queue, card) 
-        return { vars = { 
-            localize(G.GAME.current_round.suitchanger_card.suit, 'suits_singular')
-         } }
+        return { 
+            vars = { 
+                localize(G.GAME.current_round.colorchanger_card.suit, 'suits_singular')
+            } }
+            colours = { G.C.SUITS[G.GAME.current_round.colorchanger_card.suit] }
     end,
     calculate = function(self, card, context) 
         if context.joker_main then
@@ -121,17 +123,17 @@ SMODS.Joker {
 local igo = Game.init_game_object
 function Game:init_game_object()
 	local ret = igo(self)
-	ret.current_round.suitchanger_card = { suit = 'spades' }
+	ret.current_round.colorchanger_card = { suit = 'spades' }
 	return ret
 end
 
 function SMODS.current_mod.reset_game_globals(run_start)
 	-- Initialize the variable each round
-	G.GAME.current_round.suitchanger_card = { suit = 'spades' }
+	G.GAME.current_round.colorchanger_card = { suit = 'spades' }
 	
 	-- Generate a random suit
-	local random_suit = pseudorandom_element(SMODS.Suits, pseudoseed('suitshuffler' .. G.GAME.round_resets.ante))
-	G.GAME.current_round.suitchanger_card.suit = random_suit
+	local random_suit = pseudorandom_element(SMODS.Suits, pseudoseed('colorchanger' .. G.GAME.round_resets.ante))
+	G.GAME.current_round.colorchanger_card.suit = random_suit
 
 	-- Apply the random suit to every card in hand
 	for _, card in ipairs(G.hand.cards) do
