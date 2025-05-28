@@ -98,6 +98,7 @@ SMODS.Joker {
                 localize(G.GAME.current_round.colorchanger_card.suit, 'suits_singular')
             } }
             colours = { G.C.SUITS[G.GAME.current_round.colorchanger_card.suit] }
+        end
     end,
     calculate = function(self, card, context) 
         if context.joker_main then
